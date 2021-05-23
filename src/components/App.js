@@ -17,10 +17,10 @@ const App = () => {
 
   return (
     <div id="main">
-      hello!==""?<p>{hello}</p>: <div>
+{      hello!==""?<p>{hello}</p>: <div>
         <p>{err ? "All fields are mandatory" : ""}</p>
         <form action="" onSubmit={voalidData}>
-          <input type="text" placeholder="Name" data-testid='name' required oninvalid="Name is not alphanumeric" /> <br />
+          <input type="text" placeholder="Name" data-testid='name' required title="Name is not alphanumeric" /> <br />
           <input type="email" placeholder="Email" data-testid='email' required /> <br />
           <select data-testid='gender' required onInvalid=" Please identify as male, female or others">
             <option value="male">Male</option>
@@ -32,7 +32,7 @@ const App = () => {
         " required onInvalid="Password must contain atleast 6 letters" /> <br />
           <button type="submit" data-testid='submit'>Submit</button>
         </form>
-      </div>
+      </div>}
     </div>
   )
 }
