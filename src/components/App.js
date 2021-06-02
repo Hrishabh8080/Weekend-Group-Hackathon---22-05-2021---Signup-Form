@@ -1,40 +1,126 @@
-import React, { Component, useState } from "react";
+import React, {Component, useState,useEffect} from "react";
 import '../styles/App.css';
 
 const App = () => {
+  
+   const [getName,setName] = useState("");
+   const [getEmail,setEmail] = useState("");
+   const [getGender,setGender] = useState("male");
+   const [getPhone,setPhone] = useState("");
+   const [getPassword,setPassword] = useState("");
+   const [getError,setError] = useState("");
+   const [getSuccess,setSuccess] = useState(false);
+   const [getMsg,setMsg] = useState("");
+   
+   useEffect(()=>{
+      setPassword("");
+      setPhone("");
+      setName("");
+      setEmail("");
+      setGender("");
+   },[getSuccess]);
+   
+   const putNameHandler=(e)=>{
+       setName(e.target.value);
+   }
+   const putEmailHandler=(e)=>{
+       setEmail(e.target.value);
+   }
+   const putGenderHandler=(e)=>{
+      setGender(e.target.value);
+   }
+   const putPhoneHandler=(e)=>{
+      setPhone(e.target.value);
+   }
+   const putPasswordHandler=(e)=>{
+       setPassword(e.target.value);
+   }
+   
+   const submitHandler = (e)=>{
+       e.preventDefault();
+       if(getName==="" && getEmail==="" && getPassword==="" && getGender==="" && getPhone===""){
+          setError("All fields are mandatory");
+       }
+       else{
+          if(getName===""){
+             setError("Name Error");
+          }
+          else if(getEmail===""){
+             setError("Email Error");
+          } 
+          else if(getPhone===""){
+            setError("Phone Number Error");
+          }
+          else if(getPassword===""){
+             setError("Password Error");
+          }else{
+               
+            let alphaExp=/^([a-z]+[\s]*[0-9]+[\s]*)+$/i;
+            if(!alphaExp.test(getName)){
+               setError("Name is not alphanumeric");
+            }else{
+                 
+                if(!getEmail.includes("@")){
+                     setError("Email must contain @")
+                }else{
+                    if(getGender===""){
+                       setError("Please identify as male, female or others")
+                    }else{
+                       if(isNaN(getPhone)){
+                        setError("Phone Number must contain only numbers")
+                       }else{
+                          
+                        if(getPassword.length<6){
+                           setError("Password must contain atleast 6 letters")
+                        }
+                        else{
+                           setSuccess(true);
+                           let out = getEmail.split("@");
+                           setMsg(out[0]);
+                          
+                           
 
-  const [err, setError] = useState(true)
-  const [hello, setHello] = useState("")
-  const [email, setEmail] = useState("")
+                        }
+                     
+                       }
+                    }
+                }
+                
+            }
+              
 
-  const voalidData = () => {
-    let username = document.querySelector("data-testid='email'").value
-    setEmail(username.substring(0, username.lastIndexOf("@")))
-    setHello("Hello " + email)
-
-  }
-
+          }         
+       } 
+          
+       
+       
+   }
 
   return (
     <div id="main">
-{      hello!==""?<p>{hello}</p>: <div>
-        <p>{err ? "All fields are mandatory" : ""}</p>
-        <form action="" onSubmit={voalidData}>
-          <input type="text" placeholder="Name" data-testid='name' required title="Name is not alphanumeric" /> <br />
-          <input type="email" placeholder="Email" data-testid='email' required /> <br />
-          <select data-testid='gender' required onInvalid=" Please identify as male, female or others">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-          <input type="number" placeholder="Phone Number" data-testid='phoneNumber' onInvalid="Phone Number must contain only numbers" required /> <br />
-          <input type="password" placeholder="Password" data-testid='password' minLength="7
-        " required onInvalid="Password must contain atleast 6 letters" /> <br />
-          <button type="submit" data-testid='submit'>Submit</button>
-        </form>
-      </div>}
+       <form>
+           {!getSuccess && getError}
+           {getSuccess && getMsg}
+          <br></br>
+          Name<input type="text" value={getName} data-testid = 'name' onChange={putNameHandler}/>
+          <br></br>
+          Email address<input value={getEmail} type="text" data-testid = 'email' onChange={putEmailHandler} />
+          <br></br>
+          Gender<select  data-testid='gender' value={getGender}  onChange={putGenderHandler}>
+             <option value="male">male</option>
+             <option value="female">female</option>
+             <option value="other">other</option>
+             </select>
+          <br></br>
+          Phone Number <input type="text" value={getPhone} data-testid = 'phoneNumber' onChange={putPhoneHandler}/>
+          <br></br>
+          Password <input data-testid = 'password' value={getPassword} type="password" onChange={putPasswordHandler}/>
+          <br></br>
+          Submit button <button type="submit" data-testid = 'submit'  onClick={submitHandler} >Submit</button>
+       </form>
     </div>
   )
 }
+
 
 export default App;
